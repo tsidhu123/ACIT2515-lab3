@@ -67,7 +67,31 @@ def suppress_errors(*exception_types):
 
 
 def log_processes(filename="processes_snapshot.log"):
+
+    #step 1: create function 
+    def decorator_function(func):
+    #step 2: create wrapper
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            with open(filename, 'w') as f:
+                content = f.read()
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            number_of_processes = f"{timestamp} - {len(processes)} processes"
+            print(number_of_processes) # example output => 2026-01-20 10:30:45 - 15 processes
+            print("=====================================================================================")
+            print("PID      Name                     User                 CPU%     Mem%  Phys Mem(MB)  Exe                             Cmdline")
+            print("-------------------------------------------------------------------------------------")
+            return result
+        return wrapper
+    return decorator_function
+
+
+
     pass
+
+
+
+
 
 
 def filter_by_current_user(func):

@@ -6,7 +6,7 @@ import getpass
 from datetime import datetime
 from functools import wraps
 from typing import Final
-
+import getpass
 import psutil
 
 DEFAULT_SUPPRESS: Final[tuple] = (
@@ -69,32 +69,30 @@ def suppress_errors(*exception_types):
 def log_processes(filename="processes_snapshot.log"):
 
     #step 1: create function 
-    def decorator_function(func):
+    def decorator(func):
     #step 2: create wrapper
         @wraps(func)
         def wrapper(*args, **kwargs):
             with open(filename, 'w') as f:
-                content = f.read()
+                processes = f.read()
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             number_of_processes = f"{timestamp} - {len(processes)} processes"
             print(number_of_processes) # example output => 2026-01-20 10:30:45 - 15 processes
             print("=====================================================================================")
             print("PID      Name                     User                 CPU%     Mem%  Phys Mem(MB)  Exe                             Cmdline")
             print("-------------------------------------------------------------------------------------")
-            return result
+            for proc in processes:
+                print(f"{proc['pid']}      {proc['name']}     {proc['username']} {proc['cpu_percent']}    {proc['memory_percent']}    {proc['phys_mem']/1024**2}    {proc['exe']}   {proc['cmdline'].join()}  " )
+            return 
         return wrapper
-    return decorator_function
-
-
-
-    pass
-
-
-
-
-
+    return decorator
 
 def filter_by_current_user(func):
+    @wraps
+    def wrapper(*args, **kwargs):
+        current_user = 
+
+
     pass
 
 
